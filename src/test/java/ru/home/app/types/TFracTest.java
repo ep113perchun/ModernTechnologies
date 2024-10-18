@@ -4,95 +4,140 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TFracTest {
+public class TFracTest {
 
     @Test
-    void copy() throws Exception {
-        TFrac temp = new TFrac("5/3");
-        assertEquals("5/3", temp.copy().toString());
+    public void testConstructorValid() throws Exception {
+        TFrac frac = new TFrac(3, 4);
+        assertEquals("3/4", frac.toString());
     }
 
     @Test
-    void addUp() throws Exception {
-        TFrac temp = new TFrac("5/3");
-        assertEquals("29/12", temp.addUp(new TFrac("6/8")).toString());
+    public void testConstructorStringValid() throws Exception {
+        TFrac frac = new TFrac("5/8");
+        assertEquals("5/8", frac.toString());
     }
 
     @Test
-    void subtract() throws Exception {
-        TFrac temp = new TFrac("5/3");
-        assertEquals("11/12", temp.subtract(new TFrac("6/8")).toString());
+    public void testConstructorZeroDenominator() {
+        Exception exception = assertThrows(Exception.class, () -> {
+            new TFrac(1, 0);
+        });
+        assertEquals("ERROR: Denominator == 0", exception.getMessage());
     }
 
     @Test
-    void multiplyBy() throws Exception {
-        TFrac temp = new TFrac("5/3");
-        assertEquals("5/4", temp.multiplyBy(new TFrac("6/8")).toString());
+    public void testConstructorStringZeroDenominator() {
+        Exception exception = assertThrows(Exception.class, () -> {
+            new TFrac("1/0");
+        });
+        assertEquals("ERROR: Denominator == 0", exception.getMessage());
     }
 
     @Test
-    void divideBy() throws Exception {
-        TFrac temp = new TFrac("5/3");
-        assertEquals("20/9", temp.divideBy(new TFrac("6/8")).toString());
+    public void testAddition() throws Exception {
+        TFrac frac1 = new TFrac(1, 2);
+        TFrac frac2 = new TFrac(1, 3);
+        TFrac result = frac1.add(frac2);
+        assertEquals("5/6", result.toString());
     }
 
     @Test
-    void squared() throws Exception {
-        TFrac temp = new TFrac("5/3");
-        assertEquals("25/9", temp.squared().toString());
+    public void testSubtraction() throws Exception {
+        TFrac frac1 = new TFrac(3, 4);
+        TFrac frac2 = new TFrac(1, 4);
+        TFrac result = frac1.subtract(frac2);
+        assertEquals("1/2", result.toString());
     }
 
     @Test
-    void reverse() throws Exception {
-        TFrac temp = new TFrac("5/3");
-        assertEquals("3/5", temp.reverse().toString());
+    public void testMultiplication() throws Exception {
+        TFrac frac1 = new TFrac(2, 3);
+        TFrac frac2 = new TFrac(3, 4);
+        TFrac result = frac1.multiply(frac2);
+        assertEquals("1/2", result.toString());
     }
 
     @Test
-    void minus() throws Exception {
-        TFrac temp = new TFrac("5/3");
-        assertEquals("-5/3", temp.minus().toString());
+    public void testDivision() throws Exception {
+        TFrac frac1 = new TFrac(3, 4);
+        TFrac frac2 = new TFrac(2, 3);
+        TFrac result = frac1.divide(frac2);
+        assertEquals("9/8", result.toString());
     }
 
     @Test
-    void isEqually() throws Exception {
-        TFrac temp = new TFrac("5/3");
-        assertTrue(temp.isEqually(new TFrac(5, 3)));
+    public void testDivisionByZeroNumerator() {
+        Exception exception = assertThrows(ArithmeticException.class, () -> {
+            TFrac frac1 = new TFrac(1, 2);
+            TFrac frac2 = new TFrac(0, 1);
+            frac1.divide(frac2);
+        });
+        assertEquals("Division by zero", exception.getMessage());
     }
 
     @Test
-    void isMore() throws Exception {
-        TFrac temp = new TFrac("5/3");
-        assertTrue(temp.isMore(new TFrac(4, 3)));
+    public void testSquared() throws Exception {
+        TFrac frac = new TFrac(2, 3);
+        TFrac result = frac.squared();
+        assertEquals("4/9", result.toString());
     }
 
     @Test
-    void takeNumeratorNumber() throws Exception {
-        TFrac temp = new TFrac("5/3");
-        assertEquals(5, temp.takeNumeratorNumber());
+    public void testReverse() throws Exception {
+        TFrac frac = new TFrac(2, 3);
+        TFrac result = frac.reverse();
+        assertEquals("3/2", result.toString());
     }
 
     @Test
-    void takeDenominatorNumber() throws Exception {
-        TFrac temp = new TFrac("5/3");
-        assertEquals(3, temp.takeDenominatorNumber());
+    public void testMinus() throws Exception {
+        TFrac frac = new TFrac(2, 3);
+        TFrac result = frac.minus();
+        assertEquals("-2/3", result.toString());
     }
 
     @Test
-    void takeNumeratorString() throws Exception {
-        TFrac temp = new TFrac("5/3");
-        assertEquals("5", temp.takeNumeratorString());
+    public void testIsEqually() throws Exception {
+        TFrac frac1 = new TFrac(2, 3);
+        TFrac frac2 = new TFrac(4, 6);
+        assertTrue(frac1.isEqually(frac2));
     }
 
     @Test
-    void takeDenominatorString() throws Exception {
-        TFrac temp = new TFrac("5/3");
-        assertEquals("3", temp.takeDenominatorString());
+    public void testIsMore() throws Exception {
+        TFrac frac1 = new TFrac(3, 4);
+        TFrac frac2 = new TFrac(2, 4);
+        assertTrue(frac1.isMore(frac2));
     }
 
     @Test
-    void takeFracString() throws Exception {
-        TFrac temp = new TFrac("5/3");
-        assertEquals("5/3", temp.takeFracString());
+    public void testTakeNumeratorNumber() throws Exception {
+        TFrac frac = new TFrac(3, 5);
+        assertEquals(3, frac.takeNumeratorNumber());
+    }
+
+    @Test
+    public void testTakeDenominatorNumber() throws Exception {
+        TFrac frac = new TFrac(3, 5);
+        assertEquals(5, frac.takeDenominatorNumber());
+    }
+
+    @Test
+    public void testTakeNumeratorString() throws Exception {
+        TFrac frac = new TFrac(7, 9);
+        assertEquals("7", frac.takeNumeratorString());
+    }
+
+    @Test
+    public void testTakeDenominatorString() throws Exception {
+        TFrac frac = new TFrac(7, 9);
+        assertEquals("9", frac.takeDenominatorString());
+    }
+
+    @Test
+    public void testTakeFracString() throws Exception {
+        TFrac frac = new TFrac(7, 9);
+        assertEquals("7/9", frac.takeFracString());
     }
 }
